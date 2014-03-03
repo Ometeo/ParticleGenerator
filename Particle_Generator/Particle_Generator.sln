@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Particle_Generator", "Particle_Generator\Particle_Generator.vcxproj", "{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EsgiGL", "..\..\..\..\Desktop\OpenGL\EsgiGL 0.92 + Projets 4 IJV\OpenGL\ESGIGL\EsgiGL.vcxproj", "{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug EGL|Win32 = Debug EGL|Win32
+		Debug GL2|Win32 = Debug GL2|Win32
+		Debug|Win32 = Debug|Win32
+		Release EGL|Win32 = Release EGL|Win32
+		Release GL2|Win32 = Release GL2|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Debug EGL|Win32.ActiveCfg = Debug|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Debug EGL|Win32.Build.0 = Debug|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Debug GL2|Win32.ActiveCfg = Debug|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Debug GL2|Win32.Build.0 = Debug|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Debug|Win32.Build.0 = Debug|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Release EGL|Win32.ActiveCfg = Release|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Release EGL|Win32.Build.0 = Release|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Release GL2|Win32.ActiveCfg = Release|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Release GL2|Win32.Build.0 = Release|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Release|Win32.ActiveCfg = Release|Win32
+		{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}.Release|Win32.Build.0 = Release|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug EGL|Win32.ActiveCfg = Debug EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug EGL|Win32.Build.0 = Debug EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug GL2|Win32.ActiveCfg = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug GL2|Win32.Build.0 = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug|Win32.ActiveCfg = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug|Win32.Build.0 = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release EGL|Win32.ActiveCfg = Release EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release EGL|Win32.Build.0 = Release EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release GL2|Win32.ActiveCfg = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release GL2|Win32.Build.0 = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release|Win32.ActiveCfg = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release|Win32.Build.0 = Release GL2|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
