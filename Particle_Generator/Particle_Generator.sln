@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Particle_Generator", "Particle_Generator\Particle_Generator.vcxproj", "{43F5B19C-B913-4A94-9224-1C9ECBAD50A6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EsgiGL", "..\..\..\..\Desktop\OpenGL\EsgiGL 0.92 + Projets 4 IJV\OpenGL\ESGIGL\EsgiGL.vcxproj", "{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EsgiGL", "EsgiGL\EsgiGL.vcxproj", "{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
