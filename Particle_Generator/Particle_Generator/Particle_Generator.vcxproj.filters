@@ -21,6 +21,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="particle.vert">
@@ -29,5 +32,22 @@
     <None Include="particle.frag">
       <Filter>Source Files\shaders</Filter>
     </None>
+    <None Include="sky.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="sky.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="clouds.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="clouds.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Particle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

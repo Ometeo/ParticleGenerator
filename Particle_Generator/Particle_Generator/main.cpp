@@ -9,11 +9,13 @@
 #include <vector>
 #include <iostream>
 #include <time.h> 
+#include <map>
 
 #include "../EsgiGL/Common/matrix.h"
 #include "../EsgiGL/EsgiShader.h"
 #include "../EsgiGL/common/EsgiTga.h"
 
+#define PI 3.14159265
 
 // --- Globales --------------------------------------------------------------
 
@@ -23,31 +25,40 @@ struct Vertex
 	vec2 texcoords;
 };
 
+
+
+struct _Particle
+{
+	bool emited;
+	vec2 position;
+	vec3 direction;
+	int type;
+	float ttlMax;
+	float ttlCurr;
+};
+
 struct Emiter
 {
+	float emissionTime;
 	vec2 position;
+	vec3 direction;
 	int type;
 	float ttlMax;
 	float ttlCurr;
-	int maxNbParticle;
 	int nbParticle;
-
+	std::vector<_Particle> particles;
 };
-
-struct Particle
-{
-	vec2 position;
-	int type;
-	float ttlMax;
-	float ttlCurr;
-
-};
-
 
 void mouseFunc(int button, int state, int mouseX, int mouseY);
 void drawFire(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &worldMatrix, GLint &world_uniform);
 void drawIce(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &worldMatrix, GLint &world_uniform);
+void LoadTexture(const char* texName);
 
+static const float WINDOW_WIDTH = 960.f;
+static const float WINDOW_HEIGHT = 600.f;
+
+static const int MAX_PARTICLE = 500;
+static const int MIN_PARTICLE = 100;
 static const int VertexCount = 6;
 static const int MinSize = 5.f;
 static const int MaxSize = 25.f;
@@ -71,20 +82,33 @@ int totalFrames=0;
 
 float t=0; 
 
+std::map<const char*, GLuint> textures;
+
 EsgiShader shaderObject;
+EsgiShader skyShader;
+EsgiShader cloudsShader;
 // --- Fonctions -------------------------------------------------------------
 
 // ---
-
 void Update(float elapsedTime)
 {
 	t += elapsedTime;
 	for(int i = 0; i < ParticleEmiters.size(); i++)
 	{
+		
 		ParticleEmiters[i].ttlCurr -= elapsedTime;
+		for(int j = 0; j < ParticleEmiters[i].particles.size(); j++)
+		{
+			ParticleEmiters[i].particles[j].ttlCurr -=elapsedTime;
+			if(ParticleEmiters[i].particles[j].ttlCurr < 0)
+			{}	
+				//	ParticleEmiters[i].particles.erase(ParticleEmiters[i].particles.begin() + j);
+		}
 		if(ParticleEmiters[i].ttlCurr <= 0)
 			ParticleEmiters.erase(ParticleEmiters.begin() + i);
 	}
+
+
 }
 
 void Draw()
@@ -93,18 +117,112 @@ void Draw()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	// efface le color buffer
-	glClearColor(0.5f, 0.5f, 0.5f, 1.f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+	
 
-	GLuint programObject = shaderObject.GetProgram();
+	GLuint programObject = skyShader.GetProgram();
 	glUseProgram(programObject);
 
-
-	// affecter les valeurs des vertices au vertex shader
 	GLint position_attr = glGetAttribLocation(programObject, "a_Position");
 	glVertexAttribPointer(position_attr, 3, GL_FLOAT, false, sizeof(Vertex), vertices);
 
 	GLint texcoord_attr = glGetAttribLocation(programObject, "a_TexCoords");
+	glVertexAttribPointer(texcoord_attr, 2, GL_FLOAT, false, sizeof(Vertex), &vertices[0].texcoords);
+
+	glEnableVertexAttribArray(position_attr);
+	glEnableVertexAttribArray(texcoord_attr);
+
+	//Projection Orthogonale
+	mat4 projectionMatrix = esgiOrtho(0.f, 800.f, 600.f, 0.f, 0.f, 1.f);
+	GLint projection_uniform = glGetUniformLocation(programObject, "u_ProjectionMatrix");
+	
+	glUniformMatrix4fv(projection_uniform, 1, false, &projectionMatrix.I.x);
+
+	float angle = 0.f;
+	// Transformation local -> monde (model to world)
+	mat4 worldMatrix;
+	worldMatrix.Identity();
+
+	worldMatrix = esgiRotateZ(angle);
+
+	GLint world_uniform = glGetUniformLocation(programObject, "u_WorldMatrix");
+
+	// activer le transfert de l'attribut
+	glEnableVertexAttribArray(position_attr);
+	glEnableVertexAttribArray(texcoord_attr);
+
+	worldMatrix.I.x = 800.f / 1.6f;
+	worldMatrix.J.y = 600.f /1.6f;
+
+	GLint sampler_uniform;
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 3);
+	sampler_uniform = glGetUniformLocation(programObject, "u_Texture");
+	glUniform1i(sampler_uniform, 0);
+	worldMatrix.T.set(400.f, 300.f, 0.f, 1.0f);
+	glUniformMatrix4fv(world_uniform, 1, false, &worldMatrix.I.x);
+	glDrawArrays(GL_TRIANGLES, 0, VertexCount);
+
+	glDisableVertexAttribArray(position_attr);
+	glDisableVertexAttribArray(texcoord_attr);
+	skyShader.Unbind();
+
+	programObject = cloudsShader.GetProgram();
+	glUseProgram(programObject);
+
+	GLint time_uniform = glGetUniformLocation(programObject, "u_Time");
+
+	position_attr = glGetAttribLocation(programObject, "a_Position");
+	glVertexAttribPointer(position_attr, 3, GL_FLOAT, false, sizeof(Vertex), vertices);
+
+	texcoord_attr = glGetAttribLocation(programObject, "a_TexCoords");
+	glVertexAttribPointer(texcoord_attr, 2, GL_FLOAT, false, sizeof(Vertex), &vertices[0].texcoords);
+
+	projectionMatrix = esgiOrtho(0.f, 800.f, 600.f, 0.f, 0.f, 1.f);
+	projection_uniform = glGetUniformLocation(programObject, "u_ProjectionMatrix");
+	
+	glUniformMatrix4fv(projection_uniform, 1, false, &projectionMatrix.I.x);
+
+	angle = 0.f;
+	// Transformation local -> monde (model to world)
+	worldMatrix;
+	worldMatrix.Identity();
+
+	worldMatrix = esgiRotateZ(angle);
+
+	world_uniform = glGetUniformLocation(programObject, "u_WorldMatrix");
+
+	glEnableVertexAttribArray(position_attr);
+	glEnableVertexAttribArray(texcoord_attr);
+
+	glUniform1f(time_uniform, t);
+
+	worldMatrix.I.x = 800.f / 1.6f;
+	worldMatrix.J.y = 600.f /1.6f;
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 4);
+	sampler_uniform = glGetUniformLocation(programObject, "u_Texture");
+	glUniform1i(sampler_uniform, 0);
+	worldMatrix.T.set(400.f, 300.f, 0.f, 1.0f);
+	glUniformMatrix4fv(world_uniform, 1, false, &worldMatrix.I.x);
+	glDrawArrays(GL_TRIANGLES, 0, VertexCount);
+
+	glDisableVertexAttribArray(position_attr);
+	glDisableVertexAttribArray(texcoord_attr);
+	cloudsShader.Unbind();
+
+	programObject = shaderObject.GetProgram();
+	glUseProgram(programObject);
+
+
+	// affecter les valeurs des vertices au vertex shader
+	position_attr = glGetAttribLocation(programObject, "a_Position");
+	glVertexAttribPointer(position_attr, 3, GL_FLOAT, false, sizeof(Vertex), vertices);
+
+	texcoord_attr = glGetAttribLocation(programObject, "a_TexCoords");
 	glVertexAttribPointer(texcoord_attr, 2, GL_FLOAT, false, sizeof(Vertex), &vertices[0].texcoords);
 
 	GLint ttl_uniform = glGetUniformLocation(programObject, "u_ttl");
@@ -120,23 +238,23 @@ void Draw()
 	/*GLint sampler_uniform = glGetUniformLocation(programObject, "u_Texture");
 	glUniform1i(sampler_uniform, 0);*/
 
-	GLint sampler_uniform;
+	//GLint sampler_uniform;
 
 
 	//Projection Orthogonale
-	mat4 projectionMatrix = esgiOrtho(0.f, 800.f, 600.f, 0.f, 0.f, 1.f);
-	GLint projection_uniform = glGetUniformLocation(programObject, "u_ProjectionMatrix");
+	projectionMatrix = esgiOrtho(0.f, 800.f, 600.f, 0.f, 0.f, 1.f);
+	projection_uniform = glGetUniformLocation(programObject, "u_ProjectionMatrix");
 	
 	glUniformMatrix4fv(projection_uniform, 1, false, &projectionMatrix.I.x);
 
-	float angle = 45.f;
+//	float angle = 0.f;
 	// Transformation local -> monde (model to world)
-	mat4 worldMatrix;
+//	mat4 worldMatrix;
 	worldMatrix.Identity();
 
 	worldMatrix = esgiRotateZ(angle);
 
-	GLint world_uniform = glGetUniformLocation(programObject, "u_WorldMatrix");
+	world_uniform = glGetUniformLocation(programObject, "u_WorldMatrix");
 
 	// activer le transfert de l'attribut
 	glEnableVertexAttribArray(position_attr);
@@ -149,45 +267,26 @@ void Draw()
 
 		if(ParticleEmiters[i].type == 1)
 		{
-			drawFire(ParticleEmiters[i].position, programObject, sampler_uniform, worldMatrix, world_uniform);
+			for(int j = 0; j < ParticleEmiters[i].nbParticle; j++)
+			{
+				glUniform3f(dir_uniform, ParticleEmiters[i].particles[j].direction.x, ParticleEmiters[i].particles[j].direction.y, ParticleEmiters[i].particles[j].direction.z);
+				drawFire(ParticleEmiters[i].particles[j].position, programObject, sampler_uniform, worldMatrix, world_uniform);
+			}
 		}
 		if(ParticleEmiters[i].type == 2)
 		{
+			glUniform3f(dir_uniform, ParticleEmiters[i].direction.x, ParticleEmiters[i].direction.y, ParticleEmiters[i].direction.z);
 			drawIce(ParticleEmiters[i].position, programObject, sampler_uniform, worldMatrix, world_uniform);
 		}
 	}
-
-	/*worldMatrix.T.set(50.f, 50.f, 0.f, 1.f);
-
-	glUniformMatrix4fv(world_uniform, 1, false, &worldMatrix.I.x);
-	glDrawArrays(GL_TRIANGLES, 0, VertexCount);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 2);
-	sampler_uniform = glGetUniformLocation(programObject, "u_Texture");
-	glUniform1i(sampler_uniform, 0);
-
-	worldMatrix.T.set(200.f, 200.f, 0.f, 1.f);
-
-	glUniformMatrix4fv(world_uniform, 1, false, &worldMatrix.I.x);
-	glDrawArrays(GL_TRIANGLES, 0, VertexCount);*/
-
-	//drawFire(400.f, 400.f, programObject, sampler_uniform, worldMatrix, world_uniform);
-
-	/*glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 1);
-	sampler_uniform = glGetUniformLocation(programObject, "u_Texture");
-	glUniform1i(sampler_uniform, 0);
-	worldMatrix.T.set(400.f, 400.f, 0.f, 1.f);
-	glUniformMatrix4fv(world_uniform, 1, false, &worldMatrix.I.x);
-	glDrawArrays(GL_TRIANGLES, 0, VertexCount);*/
 
 	//termine l'usage de l'attribut
 	glDisableVertexAttribArray(position_attr);
 	glDisableVertexAttribArray(texcoord_attr);
 
 	shaderObject.Unbind();
-	//glUseProgram(0);
+
+	
 }
 
 //
@@ -210,33 +309,22 @@ bool Setup()
 	vertices[5].position = vec3(0.8f, 0.8f, 0.0f);
 	vertices[5].texcoords = vec2(1.0f, 1.0f);
 
-
-
 	shaderObject.LoadVertexShader("particle.vert");
 	shaderObject.LoadFragmentShader("particle.frag");
 	shaderObject.Create();
 
-	EsgiTexture *fireTGA = esgiReadTGAFile("fire.tga");
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, /* Lod */
-		fireTGA->internalFormat, fireTGA->width, fireTGA->height,
-		0, fireTGA->format, GL_UNSIGNED_BYTE, fireTGA->texels);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	skyShader.LoadVertexShader("sky.vert");
+	skyShader.LoadFragmentShader("sky.frag");
+	skyShader.Create();
 
-		EsgiTexture *iceTGA = esgiReadTGAFile("ice.tga");
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, /* Lod */
-		iceTGA->internalFormat, iceTGA->width, iceTGA->height,
-		0, iceTGA->format, GL_UNSIGNED_BYTE, iceTGA->texels);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	cloudsShader.LoadVertexShader("clouds.vert");
+	cloudsShader.LoadFragmentShader("clouds.frag");
+	cloudsShader.Create();
+
+	LoadTexture("fire.tga");
+	LoadTexture("ice.tga");
+	LoadTexture("night_sky.tga");
+	LoadTexture("clouds.tga");
 
 	return true;
 }
@@ -248,7 +336,6 @@ void Clean()
 {
 	glDeleteTextures(1, &textureID);
 	shaderObject.Destroy();
-
 }
 
 // 
@@ -256,6 +343,7 @@ void Clean()
 //
 int main(int argc, char *argv[])
 {
+	srand(time(0));
 	EsgiGLApplication esgi;
     
 	esgi.InitWindowPosition(0, 0);
@@ -280,21 +368,53 @@ void mouseFunc(int button, int state, int mouseX, int mouseY)
 	Emiter temp;
 	temp.position.x = mouseX;
 	temp.position.y = mouseY;
-	temp.ttlMax = 5.0f;
+	temp.ttlMax = rand() % (3 - 1) + 1;
+	std::cout << temp.ttlMax << std::endl;
 	temp.ttlCurr = temp.ttlMax;
 	switch (button)
 	{
 		case ESGI_LEFT_BUTTON :
 				if(false == click)
 				{
-				temp.type = 1;
-				ParticleEmiters.push_back(temp);
+					std::cout << "click" << std::endl;
+					int nbParticle = rand() % (MAX_PARTICLE - MIN_PARTICLE) + MIN_PARTICLE;
+					temp.nbParticle = nbParticle;
+					std::cout << temp.nbParticle << std::endl;
+					for(int i = 0; i < temp.nbParticle; i++)
+					{
+						int speed = rand() % (20 - 3) + 3;
+						int angle = rand() % 360 ;
+						float x = 2 * cos((float)angle * PI / 180.0);
+						float y = 2 * sin((float)angle * PI / 180.0);
+						vec3 dir(x, y, (float)speed);
+						_Particle part;
+						part.position = temp.position;
+						part.direction = dir;
+						part.ttlMax = rand() % (3 - 1) + 1;
+						part.ttlCurr = part.ttlMax;
+						part.type = 1;
+						part.emited = false;
+						temp.particles.push_back(part);
+					}
+
+					//temp.direction = dir; 
+					temp.type = 1;
+					ParticleEmiters.push_back(temp);
 				}
 
 				break;
 		case ESGI_RIGHT_BUTTON :
 			if(false == click)
 				{
+				int speed = rand() % 20;
+				int angle = rand() % 45;
+				std::cout << angle << std::endl;
+				std::cout << (float)angle << std::endl;
+				float x = 2 * cos((float)angle * PI / 180.0);
+				float y = 2 * sin((float)angle * PI / 180.0);
+				vec3 dir(x, y, (float)speed);
+				std::cout << dir.x << ", " << dir.y << std::endl;
+				temp.direction = dir;
 				temp.type = 2;
 				ParticleEmiters.push_back(temp);
 				}
@@ -305,8 +425,8 @@ void mouseFunc(int button, int state, int mouseX, int mouseY)
 
 void drawFire(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &worldMatrix, GLint &world_uniform)
 {	
-	worldMatrix.I.x = 10.f;
-	worldMatrix.J.y = 10.f;
+	worldMatrix.I.x = 5.f;
+	worldMatrix.J.y = 5.f;
 	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 1);
@@ -319,8 +439,8 @@ void drawFire(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &worl
 
 void drawIce(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &worldMatrix, GLint &world_uniform)
 {
-	worldMatrix.I.x = 10.f;
-	worldMatrix.J.y = 10.f;
+	worldMatrix.I.x = 5.f;
+	worldMatrix.J.y = 5.f;
 	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 2);
@@ -329,4 +449,18 @@ void drawIce(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &world
 	worldMatrix.T.set(pos.x, pos.y, 0.f, 1.f);
 	glUniformMatrix4fv(world_uniform, 1, false, &worldMatrix.I.x);
 	glDrawArrays(GL_TRIANGLES, 0, VertexCount);
+}
+
+void LoadTexture(const char* texName)
+{
+	EsgiTexture *tex = esgiReadTGAFile(texName);
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, /* Lod */
+		tex->internalFormat, tex->width, tex->height,
+		0, tex->format, GL_UNSIGNED_BYTE, tex->texels);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }

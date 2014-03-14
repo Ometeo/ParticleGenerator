@@ -17,8 +17,8 @@ void main()
 {
 	vec4 pos = a_Position;
 	
-	pos.x += ((u_ttl_max - u_ttl)  * 3.0);
-	pos.y += ((u_ttl_max - u_ttl)  * 3.0);
+	pos.x += ((u_ttl_max - u_ttl) * u_dir.x  * u_dir.z);
+	pos.y += ((u_ttl_max - u_ttl) * u_dir.y * u_dir.z);
 
 	//pos.x *= u_ttl;
 	//pos.y *= u_ttl;

@@ -78,10 +78,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="clouds.vert" />
+    <None Include="clouds.frag" />
     <None Include="particle.frag" />
     <None Include="particle.vert" />
+    <None Include="sky.frag" />
+    <None Include="sky.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Particle.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
