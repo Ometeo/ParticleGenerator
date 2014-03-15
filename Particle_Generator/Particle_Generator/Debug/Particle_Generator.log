@@ -1,50 +1,49 @@
-﻿Build started 15/03/2014 00:53:53.
-     1>Project "F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Particle_Generator\Particle_Generator.vcxproj" on node 2 (build target(s)).
+﻿Build started 15/03/2014 20:00:58.
+     1>Project "C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Particle_Generator\Particle_Generator.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\Particle_Generator.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\EsgiGL /I..\EsgiGL\Libs /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgitga.h(110): warning C4018: '<' : signed/unsigned mismatch
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgitga.h(124): warning C4018: '<' : signed/unsigned mismatch
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgitga.h(137): warning C4018: '<' : signed/unsigned mismatch
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgitga.h(151): warning C4018: '<' : signed/unsigned mismatch
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgitga.h(161): warning C4018: '<' : signed/unsigned mismatch
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgitga.h(210): warning C4018: '<' : signed/unsigned mismatch
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgitga.h(227): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\esgigl\common\esgitga.h(110): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\esgigl\common\esgitga.h(124): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\esgigl\common\esgitga.h(137): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\esgigl\common\esgitga.h(151): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\esgigl\common\esgitga.h(161): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\esgigl\common\esgitga.h(210): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\esgigl\common\esgitga.h(227): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(63): warning C4244: 'initializing' : conversion from 'float' to 'const int', possible loss of data
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(64): warning C4244: 'initializing' : conversion from 'float' to 'const int', possible loss of data
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(96): warning C4018: '<' : signed/unsigned mismatch
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(100): warning C4018: '<' : signed/unsigned mismatch
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(263): warning C4018: '<' : signed/unsigned mismatch
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(346): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(369): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(370): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(371): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(387): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(388): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(393): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(413): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>f:\particlegenerator-master (1)\particlegenerator-master\particle_generator\particle_generator\main.cpp(414): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(70): warning C4244: 'initializing' : conversion from 'float' to 'const int', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(71): warning C4244: 'initializing' : conversion from 'float' to 'const int', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(94): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(252): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(315): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(338): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(339): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(340): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(356): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(357): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(362): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(382): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\jonat_000\documents\github\particlegenerator\particle_generator\particle_generator\main.cpp(383): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
        Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\Particle_Generator.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:../EsgiGL/Libs esgiGL2debug.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Particle_Generator.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\Particle_Generator.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\Particle_Generator.lib" /MACHINE:X86 Debug\main.obj
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\Particle_Generator.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:../EsgiGL/Libs esgiGL2debug.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Particle_Generator.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\Particle_Generator.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\Particle_Generator.lib" /MACHINE:X86 Debug\main.obj
          Debug\Particle.obj
      1>main.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
-     1>esgiGL2debug.lib(EsgiUtils.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(EsgiUtils.obj)' or at 'F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
-     1>esgiGL2debug.lib(matrix.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(matrix.obj)' or at 'F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
-     1>esgiGL2debug.lib(EsgiGL.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(EsgiGL.obj)' or at 'F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
-     1>esgiGL2debug.lib(EsgiShader.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(EsgiShader.obj)' or at 'F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
-     1>esgiGL2debug.lib(EsgiWindows.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(EsgiWindows.obj)' or at 'F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
-     1>esgiGL2debug.lib(EsgiWinExtensions.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(EsgiWinExtensions.obj)' or at 'F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
-         Particle_Generator.vcxproj -> F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\Particle_Generator.exe
+     1>esgiGL2debug.lib(EsgiUtils.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(EsgiUtils.obj)' or at 'C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
+     1>esgiGL2debug.lib(matrix.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(matrix.obj)' or at 'C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
+     1>esgiGL2debug.lib(EsgiGL.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(EsgiGL.obj)' or at 'C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
+     1>esgiGL2debug.lib(EsgiShader.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(EsgiShader.obj)' or at 'C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
+     1>esgiGL2debug.lib(EsgiWindows.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(EsgiWindows.obj)' or at 'C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
+     1>esgiGL2debug.lib(EsgiWinExtensions.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'esgiGL2debug.lib(EsgiWinExtensions.obj)' or at 'C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\vc100.pdb'; linking object as if no debug info
+         Particle_Generator.vcxproj -> C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\Particle_Generator.exe
        Manifest:
-         c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Debug\Particle_Generator.exe;#1" /manifest Debug\Particle_Generator.exe.intermediate.manifest
+         c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Debug\Particle_Generator.exe;#1" /manifest Debug\Particle_Generator.exe.intermediate.manifest
        FinalizeBuildStatus:
          Deleting file "Debug\Particle_Generator.unsuccessfulbuild".
          Touching "Debug\Particle_Generator.lastbuildstate".
-     1>Done Building Project "F:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\Particle_Generator\Particle_Generator.vcxproj" (build target(s)).
+     1>Done Building Project "C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\Particle_Generator\Particle_Generator.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:28.43
+Time Elapsed 00:00:04.07

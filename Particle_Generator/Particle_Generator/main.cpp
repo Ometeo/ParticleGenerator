@@ -10,6 +10,7 @@
 #include <iostream>
 #include <time.h> 
 #include <map>
+#include <string>
 
 #include "../EsgiGL/Common/matrix.h"
 #include "../EsgiGL/EsgiShader.h"
@@ -53,12 +54,18 @@ void mouseFunc(int button, int state, int mouseX, int mouseY);
 void drawFire(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &worldMatrix, GLint &world_uniform);
 void drawIce(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &worldMatrix, GLint &world_uniform);
 void LoadTexture(const char* texName);
+void setVertices();
+void createShader(const char* shaderName, const char* vertexShaderPath, const char* fragmentShaderPath);
 
 static const float WINDOW_WIDTH = 960.f;
 static const float WINDOW_HEIGHT = 600.f;
 
 static const int MAX_PARTICLE = 500;
 static const int MIN_PARTICLE = 100;
+
+static const int MAX_PARTICLE_WATER = 500;
+static const int MIN_PARTICLE_WATER = 100;
+
 static const int VertexCount = 6;
 static const int MinSize = 5.f;
 static const int MaxSize = 25.f;
@@ -70,19 +77,10 @@ GLuint textureID;
 
 bool click = false;
 
-//variables for high performance timer
-LARGE_INTEGER frequency;        // ticks per second
-LARGE_INTEGER t1, t2;           // ticks
-double frameTimeQP=0;
-float frameTime =0 ;
-
-//for fps calculation
-float startTime =0, fps=0 ;
-int totalFrames=0;
-
 float t=0; 
 
 std::map<const char*, GLuint> textures;
+std::map<const char*, EsgiShader> shaders;
 
 EsgiShader shaderObject;
 EsgiShader skyShader;
@@ -95,20 +93,10 @@ void Update(float elapsedTime)
 	t += elapsedTime;
 	for(int i = 0; i < ParticleEmiters.size(); i++)
 	{
-		
 		ParticleEmiters[i].ttlCurr -= elapsedTime;
-		for(int j = 0; j < ParticleEmiters[i].particles.size(); j++)
-		{
-			ParticleEmiters[i].particles[j].ttlCurr -=elapsedTime;
-			if(ParticleEmiters[i].particles[j].ttlCurr < 0)
-			{}	
-				//	ParticleEmiters[i].particles.erase(ParticleEmiters[i].particles.begin() + j);
-		}
 		if(ParticleEmiters[i].ttlCurr <= 0)
 			ParticleEmiters.erase(ParticleEmiters.begin() + i);
 	}
-
-
 }
 
 void Draw()
@@ -121,7 +109,7 @@ void Draw()
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	
 
-	GLuint programObject = skyShader.GetProgram();
+	GLuint programObject = shaders["Sky"].GetProgram();
 	glUseProgram(programObject);
 
 	GLint position_attr = glGetAttribLocation(programObject, "a_Position");
@@ -167,9 +155,9 @@ void Draw()
 
 	glDisableVertexAttribArray(position_attr);
 	glDisableVertexAttribArray(texcoord_attr);
-	skyShader.Unbind();
+	shaders["Sky"].Unbind();
 
-	programObject = cloudsShader.GetProgram();
+	programObject = shaders["Clouds"].GetProgram();
 	glUseProgram(programObject);
 
 	GLint time_uniform = glGetUniformLocation(programObject, "u_Time");
@@ -212,9 +200,9 @@ void Draw()
 
 	glDisableVertexAttribArray(position_attr);
 	glDisableVertexAttribArray(texcoord_attr);
-	cloudsShader.Unbind();
+	shaders["Clouds"].Unbind();
 
-	programObject = shaderObject.GetProgram();
+	programObject = shaders["Particle"].GetProgram();
 	glUseProgram(programObject);
 
 
@@ -284,9 +272,7 @@ void Draw()
 	glDisableVertexAttribArray(position_attr);
 	glDisableVertexAttribArray(texcoord_attr);
 
-	shaderObject.Unbind();
-
-	
+	shaders["Particle"].Unbind();	
 }
 
 //
@@ -294,32 +280,11 @@ void Draw()
 //
 bool Setup()
 {	
-	//triangle bas
-	vertices[0].position = vec3(-0.8f, -0.8f, 0.0f);
-	vertices[0].texcoords = vec2(0.0f, 0.0f);
-	vertices[1].position = vec3(0.8f, -0.8f, 0.0f);
-	vertices[1].texcoords = vec2(1.0f, 0.0f);
-	vertices[2].position = vec3(-0.8f, 0.8f, 0.0f);
-	vertices[2].texcoords = vec2(0.0f, 1.0f);
-	//triangle haut
-	vertices[3].position = vec3(-0.8f, 0.8f, 0.0f);
-	vertices[3].texcoords = vec2(0.0f, 1.0f);
-	vertices[4].position = vec3(0.8f, -0.8f, 0.0f);
-	vertices[4].texcoords = vec2(1.0f, 0.0f);
-	vertices[5].position = vec3(0.8f, 0.8f, 0.0f);
-	vertices[5].texcoords = vec2(1.0f, 1.0f);
+	setVertices();
 
-	shaderObject.LoadVertexShader("particle.vert");
-	shaderObject.LoadFragmentShader("particle.frag");
-	shaderObject.Create();
-
-	skyShader.LoadVertexShader("sky.vert");
-	skyShader.LoadFragmentShader("sky.frag");
-	skyShader.Create();
-
-	cloudsShader.LoadVertexShader("clouds.vert");
-	cloudsShader.LoadFragmentShader("clouds.frag");
-	cloudsShader.Create();
+	createShader("Particle", "particle.vert", "particle.frag");
+	createShader("Sky", "sky.vert", "sky.frag");
+	createShader("Clouds", "clouds.vert", "clouds.frag");
 
 	LoadTexture("fire.tga");
 	LoadTexture("ice.tga");
@@ -463,4 +428,35 @@ void LoadTexture(const char* texName)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+}
+
+void setVertices()
+{
+	//triangle bas
+	vertices[0].position = vec3(-0.8f, -0.8f, 0.0f);
+	vertices[0].texcoords = vec2(0.0f, 0.0f);
+	vertices[1].position = vec3(0.8f, -0.8f, 0.0f);
+	vertices[1].texcoords = vec2(1.0f, 0.0f);
+	vertices[2].position = vec3(-0.8f, 0.8f, 0.0f);
+	vertices[2].texcoords = vec2(0.0f, 1.0f);
+	//triangle haut
+	vertices[3].position = vec3(-0.8f, 0.8f, 0.0f);
+	vertices[3].texcoords = vec2(0.0f, 1.0f);
+	vertices[4].position = vec3(0.8f, -0.8f, 0.0f);
+	vertices[4].texcoords = vec2(1.0f, 0.0f);
+	vertices[5].position = vec3(0.8f, 0.8f, 0.0f);
+	vertices[5].texcoords = vec2(1.0f, 1.0f);
+}
+
+void createShader(const char* shaderName, const char* vertexShaderPath, const char* fragmentShaderPath)
+{
+	EsgiShader shader;
+
+	shader.LoadVertexShader(vertexShaderPath);
+	shader.LoadFragmentShader(fragmentShaderPath);
+	shader.Create();
+
+	shaders.insert(std::pair<const char*,EsgiShader>(shaderName,shader));
+
+	//shaders.emplace(shaderName, shader);
 }
