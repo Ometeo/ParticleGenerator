@@ -20,6 +20,9 @@ void main()
 	pos.x += ((u_ttl_max - u_ttl) * u_dir.x  * u_dir.z);
 	pos.y += ((u_ttl_max - u_ttl) * (u_dir.y + (u_ttl_max - u_ttl)) * u_dir.z);
 
+	//pos.x *= (u_ttl_max - u_ttl);
+	//pos.y *= (u_ttl_max - u_ttl);
+
 	gl_Position = u_ProjectionMatrix * u_WorldMatrix * pos ;
 	v_TexCoords = a_TexCoords;	
 }

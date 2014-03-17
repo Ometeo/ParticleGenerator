@@ -1,68 +1,17 @@
-﻿Build started 13/03/2014 17:48:22.
-     1>Project "E:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\EsgiGL\EsgiGL.vcxproj" on node 2 (rebuild target(s)).
-     1>_PrepareForClean:
-         Deleting file "build\Debug GL2\EsgiGL.lastbuildstate".
-       InitializeBuildStatus:
+﻿Build started 17/03/2014 19:22:05.
+     1>Project "C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\EsgiGL\EsgiGL.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
          Creating "build\Debug GL2\EsgiGL.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I. /Ilibs /ZI /nologo /W3 /WX- /Od /Oy- /D ESGI_GL_20 /D WIN32 /D _DEBUG /D _LIB /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"build\Debug GL2\\" /Fd"build\Debug GL2\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt common\cube.cpp common\EsgiMesh.cpp common\EsgiUtils.cpp common\matrix.cpp EsgiGL.cpp EsgiShader.cpp Plateforme\Windows\EsgiEGL.cpp Plateforme\Windows\EsgiWindows.cpp Plateforme\Windows\EsgiWinExtensions.cpp
-         EsgiWinExtensions.cpp
-         EsgiWindows.cpp
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\plateforme\windows\esgiwindows.cpp(30): warning C4996: 'vsnprintf': This function or variable may be unsafe. Consider using vsnprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(354) : see declaration of 'vsnprintf'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\plateforme\windows\esgiwindows.cpp(44): warning C4996: 'vsnprintf': This function or variable may be unsafe. Consider using vsnprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(354) : see declaration of 'vsnprintf'
-         EsgiEGL.cpp
-         EsgiShader.cpp
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\esgishader.cpp(23): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
-         EsgiGL.cpp
-         matrix.cpp
-         EsgiUtils.cpp
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgiutils.cpp(74): warning C4101: 'linked' : unreferenced local variable
-         EsgiMesh.cpp
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(41): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(68): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(76): warning C4018: '<' : signed/unsigned mismatch
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(87): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(94): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(96): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(98): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(121): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(197) : see declaration of 'strtok'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(131): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(188) : see declaration of 'strncpy'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(148): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(188) : see declaration of 'strncpy'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(162): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(188) : see declaration of 'strncpy'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(185): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(197) : see declaration of 'strtok'
-     1>e:\particlegenerator-master (1)\particlegenerator-master\particle_generator\esgigl\common\esgimesh.cpp(227): warning C4018: '<' : signed/unsigned mismatch
-         cube.cpp
-         Generating Code...
+         All outputs are up-to-date.
        Lib:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"Libs\EsgiGL2debug.lib" /LIBPATH:./Libs /NOLOGO "build\Debug GL2\cube.obj"
-         "build\Debug GL2\EsgiMesh.obj"
-         "build\Debug GL2\EsgiUtils.obj"
-         "build\Debug GL2\matrix.obj"
-         "build\Debug GL2\EsgiGL.obj"
-         "build\Debug GL2\EsgiShader.obj"
-         "build\Debug GL2\EsgiEGL.obj"
-         "build\Debug GL2\EsgiWindows.obj"
-         "build\Debug GL2\EsgiWinExtensions.obj"
-         EsgiGL.vcxproj -> E:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\EsgiGL\Libs\EsgiGL2debug.lib
+         All outputs are up-to-date.
+         EsgiGL.vcxproj -> C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\EsgiGL\Libs\EsgiGL2debug.lib
        FinalizeBuildStatus:
          Deleting file "build\Debug GL2\EsgiGL.unsuccessfulbuild".
          Touching "build\Debug GL2\EsgiGL.lastbuildstate".
-     1>Done Building Project "E:\ParticleGenerator-master (1)\ParticleGenerator-master\Particle_Generator\EsgiGL\EsgiGL.vcxproj" (rebuild target(s)).
+     1>Done Building Project "C:\Users\jonat_000\Documents\GitHub\ParticleGenerator\Particle_Generator\EsgiGL\EsgiGL.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:23.33
+Time Elapsed 00:00:00.15

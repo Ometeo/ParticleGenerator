@@ -1,3 +1,11 @@
+/**
+ * Particle Generator
+ * 4A IJV
+ * BIHET Jonathan 
+ * DESTRIBATS Thierry
+ */
+
+
 // ---------------------------------------------------------------------------
 
 // --- Includes --------------------------------------------------------------
@@ -16,24 +24,27 @@
 #include "../EsgiGL/EsgiShader.h"
 #include "../EsgiGL/common/EsgiTga.h"
 
+#include "PGShader.hpp"
+#include "PGShaderHandler.hpp"
+
 #include "globals.h"
 
-void mouseFunc(int button, int state, int mouseX, int mouseY);
-void drawParticle(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &worldMatrix, GLint &world_uniform, GLuint texture);
-void LoadTexture(const char* texName, const char* texFile);
-void setVertices();
-void createShader(const char* shaderName, const char* vertexShaderFile, const char* fragmentShaderFile);
-void createParticle(Emiter &em);
-void createParticles(Emiter &em);
-Emiter createGenericEmiter(int type, vec2 pos);
-void createFireWorkEmiter(vec2 pos);
-void createWaterEmiter(vec2 pos);
-GLuint UseShader(EsgiShader shader);
-void UnUseShader(EsgiShader shader);
+void mouseFunc(int button, int state, int mouseX, int mouseY); //Mouse handler
+void drawParticle(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &worldMatrix, GLint &world_uniform, GLuint texture); //Draw particle method
+void LoadTexture(const char* texName, const char* texFile); //Texture Loader
+void setVertices(); //Set the vertices for the sprite
 
+void createParticle(Emiter &em); //Create a single particle from a emiter
+void createParticles(Emiter &em); //Create particles from emiter
+Emiter createGenericEmiter(int type, vec2 pos); //Create a generic particle emiter
+void createFireWorkEmiter(vec2 pos); //Create a FireWork particle emiter
+void createWaterEmiter(vec2 pos); //Create a water fountain particle emiter
+
+//Sprite's vertices
 static const int VertexCount = 6;
 Vertex vertices[VertexCount];
 
+//Vector of particle emiters
 std::vector<Emiter> ParticleEmiters; 
 
 GLuint textureID;
@@ -42,37 +53,38 @@ bool click = false;
 
 float t=0; 
 
+// Map for texture loaded
 std::map<const char*, GLuint> textures;
-std::map<const char*, EsgiShader> shaders;
 
-EsgiShader shaderObject;
-EsgiShader skyShader;
-EsgiShader cloudsShader;
+// Shader Handler
+PGShaderHandler shaders;
+
 
 GLuint programObject;
-// --- Fonctions -------------------------------------------------------------
 
-// ---
+// Update method
 void Update(float elapsedTime)
 {
 	t += elapsedTime;
-	for(int i = 0; i < ParticleEmiters.size(); i++)
+
+	for(int i = 0; i < ParticleEmiters.size(); i++) //For each particle emiters
 	{
-		for (std::vector<_Particle>::iterator it = ParticleEmiters[i].particles.begin() ; it != ParticleEmiters[i].particles.end(); ++it)
+		ParticleEmiters[i].ttlCurr -= elapsedTime; //subsract elapsed time from time to live
+		
+		for (std::vector<Particle>::iterator it = ParticleEmiters[i].particles.begin() ; it != ParticleEmiters[i].particles.end(); ++it) //for each particle
 		{
-			if(it->emited == true)
+			if(it->emited == true) //if the particle was emited
 			{
-				it->ttlCurr -= elapsedTime;
+				it->ttlCurr -= elapsedTime; //substract elapsed time from time to live
 				if(it->ttlCurr <= 0)
-					it->living = false;
+					it->living = false; //kill particle if the time to live if equals to 0
 			}
 		}
 
-		ParticleEmiters[i].ttlCurr -= elapsedTime;
-		if((ParticleEmiters[i].ttlPrev - ParticleEmiters[i].ttlCurr) >= 0.1f)
+		if((ParticleEmiters[i].ttlPrev - ParticleEmiters[i].ttlCurr) >= 0.1f) // each tenth secon
 		{
 			ParticleEmiters[i].ttlPrev = ParticleEmiters[i].ttlCurr;
-			if(ParticleEmiters[i].ttlCurr >= ParticleEmiters[i].ttlMax /2 && ParticleEmiters[i].type == 2)
+			if(ParticleEmiters[i].ttlCurr >= ParticleEmiters[i].ttlMax /2 && ParticleEmiters[i].type == 2) //for water particle
 			{
 				for(int k = 0; k < ParticleEmiters[i].nbParticle / (ParticleEmiters[i].ttlMax * 100); k++)
 				{
@@ -85,11 +97,12 @@ void Update(float elapsedTime)
 			}
 		}
 			
-		if(ParticleEmiters[i].ttlCurr <= 0)
+		if(ParticleEmiters[i].ttlCurr <= 0) //supress particle emiters of ttl < 0
 			ParticleEmiters.erase(ParticleEmiters.begin() + i);
 	}
 }
 
+// Draw Method
 void Draw()
 {
 	glEnable(GL_BLEND);
@@ -101,13 +114,13 @@ void Draw()
 	GLint world_uniform;
 	mat4 projectionMatrix = esgiOrtho(0.f, 800.f, 600.f, 0.f, 0.f, 1.f);
 	
-	GLint position_attr = glGetAttribLocation(programObject, "a_Position");
-	GLint texcoord_attr = glGetAttribLocation(programObject, "a_TexCoords");
+	GLint position_attr;
+	GLint texcoord_attr;
 
 	GLint sampler_uniform;
 
 	float angle = 0.f;
-	// Transformation local -> monde (model to world)
+
 	mat4 worldMatrix;
 	worldMatrix.Identity();
 
@@ -115,10 +128,13 @@ void Draw()
 	worldMatrix.I.x = 800.f / 1.6f;
 	worldMatrix.J.y = 600.f /1.6f;
 
+	/**
+	 * Draw Sky - Start
+	 */
+	programObject = shaders.UseShader("Sky");
 
-
-
-	programObject = UseShader(shaders["Sky"]);
+	position_attr = glGetAttribLocation(programObject, "a_Position");
+	texcoord_attr = glGetAttribLocation(programObject, "a_TexCoords");
 
 	projection_uniform = glGetUniformLocation(programObject, "u_ProjectionMatrix");
 	world_uniform = glGetUniformLocation(programObject, "u_WorldMatrix");
@@ -146,11 +162,18 @@ void Draw()
 
 	glDisableVertexAttribArray(position_attr);
 	glDisableVertexAttribArray(texcoord_attr);
-	UnUseShader(shaders["Sky"]);
+	shaders.UnUseShader("sky");
+	/**
+	 * Draw Sky - End
+	 */
 
+	/**
+	 * Draw Clouds - Start
+	 */
+	programObject = shaders.UseShader("Clouds");
 
-
-	programObject = UseShader(shaders["Clouds"]);
+	position_attr = glGetAttribLocation(programObject, "a_Position");
+	texcoord_attr = glGetAttribLocation(programObject, "a_TexCoords");
 		
 	projection_uniform = glGetUniformLocation(programObject, "u_ProjectionMatrix");
 	world_uniform = glGetUniformLocation(programObject, "u_WorldMatrix");
@@ -160,8 +183,6 @@ void Draw()
 	glVertexAttribPointer(texcoord_attr, 2, GL_FLOAT, false, sizeof(Vertex), &vertices[0].texcoords);
 	
 	glUniformMatrix4fv(projection_uniform, 1, false, &projectionMatrix.I.x);
-
-	
 
 	glEnableVertexAttribArray(position_attr);
 	glEnableVertexAttribArray(texcoord_attr);
@@ -181,10 +202,19 @@ void Draw()
 	glDisableVertexAttribArray(position_attr);
 	glDisableVertexAttribArray(texcoord_attr);
 
-	UnUseShader(shaders["Clouds"]);
+	shaders.UnUseShader("Clouds");
+	/**
+	 * Draw Clouds - End
+	 */
 
+	/**
+	 * Draw Particle - Start
+	 */
+	programObject = shaders.UseShader("Particle");
 
-	programObject = UseShader(shaders["Particle"]);
+	position_attr = glGetAttribLocation(programObject, "a_Position");
+	texcoord_attr = glGetAttribLocation(programObject, "a_TexCoords");
+
 	projection_uniform = glGetUniformLocation(programObject, "u_ProjectionMatrix");
 	world_uniform = glGetUniformLocation(programObject, "u_WorldMatrix");
 
@@ -198,8 +228,6 @@ void Draw()
 	
 	glUniformMatrix4fv(projection_uniform, 1, false, &projectionMatrix.I.x);
 
-	
-	// activer le transfert de l'attribut
 	glEnableVertexAttribArray(position_attr);
 	glEnableVertexAttribArray(texcoord_attr);
 
@@ -221,24 +249,26 @@ void Draw()
 		}
 	}
 
-	//termine l'usage de l'attribut
 	glDisableVertexAttribArray(position_attr);
 	glDisableVertexAttribArray(texcoord_attr);
 
-	UnUseShader(shaders["Particle"]);	
+	shaders.UnUseShader("Particle");
+	/**
+	 * Draw Clouds - End
+	 */
 }
 
-/**
- * Initialise Mesh, Shaders & Textures.
- */
+// Initialise Mesh, Shaders & Textures.
 bool Setup()
 {	
 	setVertices();
 
-	createShader("Particle", "particle.vert", "particle.frag");
-	createShader("Sky", "sky.vert", "sky.frag");
-	createShader("Clouds", "clouds.vert", "clouds.frag");
+	//Create all the shaders
+	shaders.addShader(PGShader("Particle", "particle.vert", "particle.frag"));
+	shaders.addShader(PGShader("Sky", "sky.vert", "sky.frag"));
+	shaders.addShader(PGShader("Clouds", "clouds.vert", "clouds.frag"));
 
+	//Load all textures
 	LoadTexture("Fireworks", "fire.tga");
 	LoadTexture("Water", "ice.tga");
 	LoadTexture("Sky", "night_sky.tga");
@@ -253,10 +283,6 @@ bool Setup()
 void Clean()
 {
 	glDeleteTextures(1, &textureID);
-
-	for (std::map<const char*,EsgiShader>::iterator it=shaders.begin(); it!=shaders.end(); ++it)
-		it->second.Destroy();
-	shaders.clear();
 
 	textures.clear();
 }
@@ -285,6 +311,9 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+/**
+ * mouseFunc
+ */
 void mouseFunc(int button, int state, int mouseX, int mouseY)
 {
 	vec2 pos(mouseX, mouseY);
@@ -305,6 +334,9 @@ void mouseFunc(int button, int state, int mouseX, int mouseY)
 	click = !click;
 }
 
+/**
+ * Draw Single Particle
+ */
 void drawParticle(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &worldMatrix, GLint &world_uniform, GLuint texture)
 {
 	worldMatrix.I.x = 5.f;
@@ -319,6 +351,9 @@ void drawParticle(vec2 pos, GLuint programObject, GLint &sampler_uniform, mat4 &
 	glDrawArrays(GL_TRIANGLES, 0, VertexCount);
 }
 
+/**
+ * LoadTexture
+ */
 void LoadTexture(const char* texName, const char* texFile)
 {
 	EsgiTexture *tex = esgiReadTGAFile(texFile);
@@ -353,17 +388,9 @@ void setVertices()
 	vertices[5].texcoords = vec2(1.0f, 1.0f);
 }
 
-void createShader(const char* shaderName, const char* vertexShaderFile, const char* fragmentShaderFile)
-{
-	EsgiShader shader;
-
-	shader.LoadVertexShader(vertexShaderFile);
-	shader.LoadFragmentShader(fragmentShaderFile);
-	shader.Create();
-
-	shaders.insert(std::pair<const char*,EsgiShader>(shaderName,shader));
-}
-
+/**
+ * Create Single Particle
+ */
 void createParticle(Emiter &em)
 {
 	float speed_max;
@@ -373,7 +400,7 @@ void createParticle(Emiter &em)
 	int angle = 0;
 	int emiterOpeningAngle = 0;
 
-	_Particle part;
+	Particle part;
 	part.living = true;
 	part.position = em.position;
 	part.type = em.type;
@@ -411,12 +438,18 @@ void createParticle(Emiter &em)
 	em.particles.push_back(part);
 }
 
+/**
+ * Create Particles for Emiter em
+ */
 void createParticles(Emiter &em)
 {
 	for(int i = 0; i < em.nbParticle; i++)
 		createParticle(em);
 }
 
+/**
+ * Create Generic Emiter
+ */
 Emiter createGenericEmiter(int type, vec2 pos)
 {
 	Emiter temp;
@@ -428,6 +461,9 @@ Emiter createGenericEmiter(int type, vec2 pos)
 	return temp;
 }
 
+/**
+ * Create FireWork Emiter
+ */
 void createFireWorkEmiter(vec2 pos)
 {
 	Emiter temp = createGenericEmiter(1, pos);
@@ -439,6 +475,9 @@ void createFireWorkEmiter(vec2 pos)
 	ParticleEmiters.push_back(temp);
 }
 
+/**
+ * Create Water Generic Emiter
+ */
 void createWaterEmiter(vec2 pos)
 {
 	Emiter temp = createGenericEmiter(2, pos);	
@@ -448,20 +487,4 @@ void createWaterEmiter(vec2 pos)
 	temp.ttlCurr = temp.ttlMax;
 	temp.ttlPrev = temp.ttlMax;
 	ParticleEmiters.push_back(temp);
-}
-
-void DrawSky()
-{
-}
-
-GLuint UseShader(EsgiShader shader)
-{
-	GLuint programObject = shader.GetProgram();
-	glUseProgram(programObject);
-	return programObject;
-}
-
-void UnUseShader(EsgiShader shader)
-{
-	shader.Unbind();
 }

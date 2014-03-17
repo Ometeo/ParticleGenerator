@@ -11,7 +11,6 @@ varying vec2 v_TexCoords;
 
 void main()
 {	
-	
 	v_TexCoords = a_TexCoords;
 	gl_Position = u_ProjectionMatrix * u_WorldMatrix * a_Position;
 }

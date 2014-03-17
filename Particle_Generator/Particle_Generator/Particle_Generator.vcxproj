@@ -78,7 +78,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="PGShader.cpp" />
+    <ClCompile Include="PGShaderHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="clouds.vert" />
@@ -90,7 +91,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h" />
-    <ClInclude Include="Particle.hpp" />
+    <ClInclude Include="PGShader.hpp" />
+    <ClInclude Include="PGShaderHandler.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
